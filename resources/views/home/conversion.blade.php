@@ -1,10 +1,7 @@
 <x-layout>
-    {{-- card --}}
-    {{-- <h1>Live exchange rates at your fingertips</h1> --}}
-    {{-- @dd($apiData['conversion_rates']) --}}
-    <div class="min-h-[650px] mt-[100px] flex justify-center items-center px-4">
+    <div class="min-h-[650px] mt-[32px] px-4">
         <div
-            class="sm:mt-0 max-w-sm sm:max-w-xl md:max-w-screen-md lg:max-w-screen-lg p-5 flex-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            class="sm:mt-0 max-w-sm sm:max-w-xl md:max-w-screen-md lg:max-w-screen-lg p-5 flex-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto">
             <div class="">
                 <x-tab />
             </div>
@@ -85,7 +82,7 @@
                             </select>
                         </div>
                         <input type="number" class="w-full border-0 outline-0 text-5xl font-number"
-                            value="{{ $value['result'] ?? 1.2 }}" disabled>
+                            value="{{ $value['result'] ?? '0.00' }}" disabled>
                     </div>
                 </div>
                 <div class="flex justify-end items-center mb-5">
@@ -101,6 +98,8 @@
             {{-- <x-conversion-table /> --}}
 
         </div>
+
+        {{-- <x-conversion-table /> --}}
     </div>
     <script>
         const switcher = document.getElementById('switch');

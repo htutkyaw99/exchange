@@ -8,5 +8,9 @@
             <a href="{{ route('rate') }}" class="{{ request()->routeIs('rate') ? 'active-tab' : 'tab' }}"
                 aria-current="page">Today's Rate</a>
         </li>
+        <li class="me-2">
+            <a href="{{ route('history') }}" class="{{ request()->routeIs('history') ? 'active-tab' : 'tab' }}"
+                aria-current="page">Hisorical Rate</a>
+        </li>
     </ul>
 </div>

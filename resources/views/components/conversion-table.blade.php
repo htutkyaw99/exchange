@@ -1,5 +1,5 @@
 @php
-    $conversionsUnit = [1, 25, 50, 75];
+    $conversionsAmount = [1, 25, 50, 75];
     $conversionsCurrency = ['USD', 'EUR', 'JPY', 'THB', 'INR'];
     $currencySvg = [
         'USD' => asset('img/usa.png'),
@@ -8,6 +8,15 @@
         'INR' => asset('img/india.png'),
         'THB' => asset('img/thailand.png'),
     ];
+
+    $currencyUnit = [
+        'USD' => 'Dollar',
+        'EUR' => 'Euro',
+        'JPY' => 'Yen',
+        'INR' => 'Rupees',
+        'THB' => 'Baht',
+    ];
+
     $selectedCur = 'USD';
 
     $filterCurrency = array_filter($rate['data'], function ($value) {
@@ -20,10 +29,11 @@
 
 @endphp
 
+{{-- @dd($selectedCur) --}}
+
 {{-- @dd(array_key_first($selectedCur)) --}}
 
 <div class="relative overflow-x-auto">
-
     <form action="{{ route('rate') }}" id="currency-select" class="max-w-sm w-fit ml-auto my-5 flex items-center gap-3">
         {{-- @csrf --}}
         <label for="currency-dropdown" class="sr-only">Select Currency</label>
@@ -48,8 +58,11 @@
         <thead class="text-lg text-gray-900 uppercase dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">Currency</th>
-                @foreach ($conversionsUnit as $unit)
-                    <th scope="col" class="px-6 py-3 font-number text-end">{{ $unit }}</th>
+                @foreach ($conversionsAmount as $amount)
+                    <th scope="col" class="px-6 py-3 font-number text-end">
+                        {{ $amount }}<span
+                            class="ml-1 font-medium font-sans">{{ array_key_first($selectedCur) }}</span>
+                    </th>
                 @endforeach
             </tr>
         </thead>
@@ -62,8 +75,8 @@
                         <img class="w-[32px] h-[32px]" src="{{ $currencySvg[$key] }}" alt="Flag">
                         {{ $key }}
                     </th>
-                    @foreach ($conversionsUnit as $unit)
-                        <td class="px-6 py-4">{{ round($unit * $value, 4) }}</td>
+                    @foreach ($conversionsAmount as $amount)
+                        <td class="px-6 py-4">{{ round($amount * $value, 4) }}</td>
                     @endforeach
                 </tr>
             @endforeach

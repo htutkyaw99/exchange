@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class ConversionController extends Controller
 {
-    public function conversion()
+    public function conversion(Request $request)
     {
         return view('home.conversion');
     }

@@ -9,9 +9,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="max-w-screen-lg mx-auto bg-primary">
+<body class=" bg-primary">
     <x-nav />
-    {{ $slot }}
+    <div class="max-w-screen-lg mx-auto">
+        {{ $slot }}
+    </div>
 </body>
 
 </html>
