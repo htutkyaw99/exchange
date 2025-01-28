@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-
+use App\Models\HistoricalRate;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Http;
@@ -28,5 +28,17 @@ class CurrencyController extends Controller
         return view('home.today', [
             'rate' => $result
         ]);
+    }
+
+    public function master()
+    {
+        $historical_rates = HistoricalRate::all();
+        // 
+        return view(
+            'home.test',
+            [
+                'rates' => $historical_rates
+            ]
+        );
     }
 }

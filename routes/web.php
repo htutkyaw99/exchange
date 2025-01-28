@@ -15,6 +15,7 @@ Route::get('/login', [LoginController::class, 'create'])->name('login');
 Route::get('/history', [HistoryController::class, 'historyRate'])->name('history');
 Route::post('/convert', [ConversionController::class, 'convert'])->name('convert');
 
+Route::get('/test', [CurrencyController::class, 'master'])->name('test');
 
 //Password Reset
 Route::middleware('guest')->group(function () {

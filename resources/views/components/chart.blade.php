@@ -2,19 +2,10 @@
 
 <div class="mx-auto max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl w-full bg-white rounded-lg shadow-sm dark:bg-gray-800">
     <div class="flex justify-between p-4 md:p-6 pb-0 md:pb-0">
-        <div>
-            <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">$12,423</h5>
-            <p class="text-base font-normal text-gray-500 dark:text-gray-400">Sales this week</p>
-        </div>
-        <div
-            class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-            23%
-            <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 10 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 13V1m0 0L1 5m4-4 4 4" />
-            </svg>
-        </div>
+        <p id="title" class="text-lg font-bold text-gray-500 dark:text-gray-400">Last 7 days rates base on USD
+            <span class="font-number">1</span>
+            Dollar
+        </p>
     </div>
     <div id="labels-chart" class="px-2.5"></div>
     <div
@@ -60,153 +51,126 @@
                     </li>
                 </ul>
             </div>
-            <a href="#"
-                class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
-                Sales Report
-                <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 9 4-4-4-4" />
-                </svg>
-            </a>
+
+            <select id="currency"
+                class="block w-fit py-2.5 px-0 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                <option selected value="MYR">Select Currency</option>
+                <option value="MYR">MYR</option>
+                <option value="PHP">PHP</option>
+                <option value="SGD">SGD</option>
+                <option value="THB">THB</option>
+            </select>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
 
+
 <script>
     const rates = @json($rates);
 
     const distinctDates = [...new Set(rates.map(rate => rate.date))];
 
-    const myrRates = rates.reduce((acc, rate) => {
-        if (rate.target_id === 2) {
-            acc.push(rate.rate);
+    // Currency-specific rates
+    const rateMapping = {
+        MYR: rates.filter(rate => rate.target_id === 2).map(rate => rate.rate),
+        PHP: rates.filter(rate => rate.target_id === 3).map(rate => rate.rate * 100),
+        SGD: rates.filter(rate => rate.target_id === 4).map(rate => rate.rate * 100),
+        THB: rates.filter(rate => rate.target_id === 5).map(rate => rate.rate * 100),
+    };
+
+    const currencyLabels = {
+        MYR: "Malaysian Ringgit",
+        PHP: "Philippines Peso",
+        SGD: "Singapore Dollar",
+        THB: "Thai Baht",
+    };
+
+    const ccSelect = document.getElementById("currency");
+
+    // Initial setup
+    let selectedCurrency = ccSelect.value;
+    let chart;
+
+    const renderChart = () => {
+        const label = currencyLabels[selectedCurrency];
+        const data = rateMapping[selectedCurrency];
+
+        if (!data) {
+            console.error(`No data found for ${selectedCurrency}`);
+            return;
         }
-        return acc;
-    }, []);
 
-    const phpRates = rates.reduce((acc, rate) => {
-        if (rate.target_id === 3) {
-            acc.push(rate.rate * 100);
-        }
-        return acc;
-    }, []);
-
-
-    const sgdRates = rates.reduce((acc, rate) => {
-        if (rate.target_id === 4) {
-            acc.push(rate.rate * 100);
-        }
-        return acc;
-    }, []);
-
-
-    const thbRates = rates.reduce((acc, rate) => {
-        if (rate.target_id === 5) {
-            acc.push(rate.rate * 100);
-        }
-        return acc;
-    }, []);
-
-    const options = {
-        // set the labels option to true to show the labels on the X and Y axis
-        xaxis: {
-            show: true,
-            categories: distinctDates,
-            labels: {
-                show: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
-                }
-            },
-            axisBorder: {
-                show: false,
-            },
-            axisTicks: {
-                show: false,
-            },
-        },
-        yaxis: {
-            show: true,
-            labels: {
-                show: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+        const options = {
+            xaxis: {
+                categories: distinctDates,
+                labels: {
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                        cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+                    },
                 },
-                formatter: function(value) {
-                    return value;
-                }
             },
-        },
-        series: [{
-                name: "Malaysia Ringgit",
-                data: myrRates,
+            yaxis: {
+                labels: {
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                        cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+                    },
+                    formatter: value => value.toFixed(2),
+                },
+            },
+            series: [{
+                name: label,
+                data: data,
                 color: "#1A56DB",
+            }, ],
+            chart: {
+                height: "100%",
+                type: "area",
+                fontFamily: "Inter, sans-serif",
+                toolbar: {
+                    show: false
+                },
             },
-            // {
-            //     name: "Philippine Peso",
-            //     data: phpRates,
-            //     color: "#7E3BF2",
-            // },
-            // {
-            //     name: "Singapore Dollar",
-            //     data: sgdRates,
-            //     color: "#E3A008",
-            // },
-            // {
-            //     name: "Thai Bath",
-            //     data: thbRates,
-            //     color: "#31C48D",
-            // },
-        ],
-        chart: {
-            sparkline: {
+            fill: {
+                type: "gradient",
+                gradient: {
+                    opacityFrom: 0.55,
+                    opacityTo: 0,
+                    shade: "#1C64F2",
+                },
+            },
+            stroke: {
+                width: 6
+            },
+            dataLabels: {
                 enabled: false
             },
-            height: "100%",
-            width: "100%",
-            type: "area",
-            fontFamily: "Inter, sans-serif",
-            dropShadow: {
-                enabled: false,
+            tooltip: {
+                enabled: true
             },
-            toolbar: {
-                show: false,
+            grid: {
+                show: false
             },
-        },
-        tooltip: {
-            enabled: true,
-            x: {
-                show: false,
-            },
-        },
-        fill: {
-            type: "gradient",
-            gradient: {
-                opacityFrom: 0.55,
-                opacityTo: 0,
-                shade: "#1C64F2",
-                gradientToColors: ["#1C64F2"],
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        stroke: {
-            width: 6,
-        },
-        legend: {
-            show: false
-        },
-        grid: {
-            show: false,
-        },
-    }
+        };
 
-    const chart = new ApexCharts(document.getElementById("labels-chart"), options);
-    chart.render();
+        // If chart already exists, update it
+        if (chart) {
+            chart.updateOptions(options);
+        } else {
+            chart = new ApexCharts(document.getElementById("labels-chart"), options);
+            chart.render();
+        }
+    };
+
+    // Initial chart rendering
+    renderChart();
+
+    // Event listener for currency selection
+    ccSelect.addEventListener("change", function() {
+        selectedCurrency = this.value;
+        renderChart();
+    });
 </script>
