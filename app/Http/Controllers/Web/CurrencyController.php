@@ -18,27 +18,15 @@ class CurrencyController extends Controller
         // dd($from);
 
         if ($from == 'USD') {
-            $response = Http::get("https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_aFF6gipUdLoqjZBVYBWXMWU43w7qDTADvV85y9pU&currencies=EUR%2CJPY%2CTHB%2CINR%2CUSD");
+            $response = Http::get("https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_aFF6gipUdLoqjZBVYBWXMWU43w7qDTADvV85y9pU&currencies=MYR%2CPHP%2CSGD%2CTHB%2CUSD");
             $result = $response->json();
         } else {
-            $response = Http::get("https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_aFF6gipUdLoqjZBVYBWXMWU43w7qDTADvV85y9pU&currencies=EUR%2CJPY%2CTHB%2CINR%2CUSD&base_currency={$from}");
+            $response = Http::get("https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_aFF6gipUdLoqjZBVYBWXMWU43w7qDTADvV85y9pU&currencies=MYR%2CPHP%2CSGD%2CTHB%2CUSD&base_currency={$from}");
             $result = $response->json();
         }
 
         return view('home.today', [
             'rate' => $result
         ]);
-    }
-
-    public function master()
-    {
-        $historical_rates = HistoricalRate::all();
-        // 
-        return view(
-            'home.test',
-            [
-                'rates' => $historical_rates
-            ]
-        );
     }
 }

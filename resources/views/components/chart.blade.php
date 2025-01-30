@@ -1,5 +1,4 @@
 {{-- @dd($rates) --}}
-
 <div class="mx-auto max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl w-full bg-white rounded-lg shadow-sm dark:bg-gray-800">
     <div class="flex justify-between p-4 md:p-6 pb-0 md:pb-0">
         <p id="title" class="text-lg font-bold text-gray-500 dark:text-gray-400">Last 7 days rates base on USD
@@ -52,6 +51,7 @@
                 </ul>
             </div>
 
+
             <select id="currency"
                 class="block w-fit py-2.5 px-0 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                 <option selected value="MYR">Select Currency</option>
@@ -60,6 +60,8 @@
                 <option value="SGD">SGD</option>
                 <option value="THB">THB</option>
             </select>
+
+
         </div>
     </div>
 </div>
@@ -75,9 +77,9 @@
     // Currency-specific rates
     const rateMapping = {
         MYR: rates.filter(rate => rate.target_id === 2).map(rate => rate.rate),
-        PHP: rates.filter(rate => rate.target_id === 3).map(rate => rate.rate * 100),
-        SGD: rates.filter(rate => rate.target_id === 4).map(rate => rate.rate * 100),
-        THB: rates.filter(rate => rate.target_id === 5).map(rate => rate.rate * 100),
+        PHP: rates.filter(rate => rate.target_id === 3).map(rate => rate.rate),
+        SGD: rates.filter(rate => rate.target_id === 4).map(rate => rate.rate),
+        THB: rates.filter(rate => rate.target_id === 5).map(rate => rate.rate),
     };
 
     const currencyLabels = {
@@ -97,10 +99,10 @@
         const label = currencyLabels[selectedCurrency];
         const data = rateMapping[selectedCurrency];
 
-        if (!data) {
-            console.error(`No data found for ${selectedCurrency}`);
-            return;
-        }
+        // if (!data) {
+        //     console.error(`No data found for ${selectedCurrency}`);
+        //     return;
+        // }
 
         const options = {
             xaxis: {

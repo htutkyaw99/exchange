@@ -1,20 +1,20 @@
 @php
     $conversionsAmount = [1, 25, 50, 75];
-    $conversionsCurrency = ['USD', 'EUR', 'JPY', 'THB', 'INR'];
+    $conversionsCurrency = ['USD', 'MYR', 'PHP', 'SGD', 'THB'];
     $currencySvg = [
         'USD' => asset('img/usa.png'),
-        'EUR' => asset('img/uk.png'),
-        'JPY' => asset('img/japan.png'),
-        'INR' => asset('img/india.png'),
+        'MYR' => asset('img/malaysia.png'),
+        'PHP' => asset('img/phillipine.png'),
+        'SGD' => asset('img/singapore.png'),
         'THB' => asset('img/thailand.png'),
     ];
 
     $currencyUnit = [
-        'USD' => 'Dollar',
-        'EUR' => 'Euro',
-        'JPY' => 'Yen',
-        'INR' => 'Rupees',
-        'THB' => 'Baht',
+        'USD' => 'US Dollar',
+        'MYR' => 'Malaysian Rinngit',
+        'PHP' => 'Phillipine Peso',
+        'SGD' => 'Singapore Dollar',
+        'THB' => 'Thai Baht',
     ];
 
     $selectedCur = 'USD';

@@ -1,3 +1,6 @@
+@props(['value' => []])
+
+
 <x-layout>
     <div class="min-h-[650px] mt-[32px] px-4">
         <div
@@ -6,7 +9,8 @@
                 <x-tab />
             </div>
 
-            <x-conversioncal />
+            <x-conversioncal :value="$value" />
+
 
             @if (isset($value))
                 <x-exchange-card :value="$value" />

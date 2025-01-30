@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="max-w-sm sm:max-w-xl md:max-w-3xl mx-auto lg:mx-0 space-y-8 mt-28">
+    <div class="max-w-sm sm:max-w-xl md:max-w-3xl mx-auto lg:mx-0 space-y-8 mt-[32px]">
         @if (isset($values))
             @foreach ($values as $card)
                 <x-favourite-card :value="$card" />

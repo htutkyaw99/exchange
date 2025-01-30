@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ConversionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -13,13 +14,16 @@ class ConversionController extends Controller
         return view('home.conversion');
     }
 
-    public function convert(Request $request)
+    public function convert(ConversionRequest $request)
     {
         // dd('Hello');
+        // dd($request->all());
 
-        $from = $request->from_currency;
+        // dd($request->validated());
 
-        $to = $request->to_currency;
+        $from = $request->validated('from_currency');
+
+        $to = $request->validated('to_currency');
 
         if ($from == 'USD') {
             $response = Http::get("https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_aFF6gipUdLoqjZBVYBWXMWU43w7qDTADvV85y9pU&currencies={$to}");
